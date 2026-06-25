@@ -24,7 +24,6 @@ uniform float gradeVignette; // extra vignette strength (storm > calm)
 
 // --- extra post FX ---
 uniform float aboveWaterSun; // 1 when sun is above horizon
-uniform float rainAmount;    // 0..1 lens raindrops (storm + just surfaced)
 uniform float autoExposure;  // brightness comp for eye adaptation (depth)
 uniform float stormMurk;     // stormIntensity * underwaterFactor: 0..1
 uniform float lightningFlash; // 0..1 current flash brightness (decays fast)
@@ -121,21 +120,8 @@ vec3 lensFlare(vec2 uv, vec2 sunUV) {
     return col;
 }
 
-// ---- Lens raindrops: animated refractive blobs on the "lens" ----
-float hash21r(vec2 p){ p=fract(p*vec2(123.34,456.21)); p+=dot(p,p+45.32); return fract(p.x*p.y); }
-vec2 raindropOffset(vec2 uv, float amount) {
-    if (amount <= 0.001) return vec2(0.0);
-    vec2 g = uv * vec2(9.0, 6.0);
-    vec2 id = floor(g);
-    vec2 f = fract(g) - 0.5;
-    float r = hash21r(id);
-    // Drops slide downward over time.
-    float slide = fract(r + time * (0.1 + 0.2 * r));
-    f.y += slide - 0.5;
-    float d = length(f);
-    float drop = smoothstep(0.35, 0.0, d) * step(r, amount);
-    return f * drop * 0.05;
-}
+// (Lens raindrops removed — caused screen flicker in storm and a pinching
+//  "point" artifact even without storm.)
 
 void main() {
     vec2 texel = 1.0 / vec2(textureSize(screenTexture, 0));
@@ -146,8 +132,6 @@ void main() {
         uvBase.x += sin(TexCoords.y * 42.0 + time * 1.6) * 0.0028 * underwaterFactor;
         uvBase.y += cos(TexCoords.x * 38.0 + time * 1.3) * 0.0028 * underwaterFactor;
     }
-    // --- lens raindrops: refractive UV nudge (storm / just surfaced) ---
-    uvBase += raindropOffset(TexCoords, rainAmount);
 
     // --- chromatic aberration: split RGB radially from the centre ---
     vec2 caDir = TexCoords - 0.5;

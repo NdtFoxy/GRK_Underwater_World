@@ -481,12 +481,7 @@ void Scene::Render(Camera& camera, float waveSpeed, float cloudSpeed, float wave
     // Extra post FX state.
     glUniform1f(glGetUniformLocation(screenProgram, "aboveWaterSun"),
                 glm::clamp(sunDir.y * 3.0f, 0.0f, 1.0f));
-    // Lens raindrops: strong in storm, and briefly when at the surface.
-    {
-        float rain = stormIntensity * 0.8f;
-        glUniform1f(glGetUniformLocation(screenProgram, "rainAmount"),
-                    rain * (1.0f - underwaterFactor));
-    }
+    // (Lens raindrops removed.)
     // Auto-exposure: by day, lift brightness as the camera dives into the
     // dark so the deep stays readable. At NIGHT, do the opposite — clamp the
     // whole scene down so underwater goes genuinely dark and moody and you

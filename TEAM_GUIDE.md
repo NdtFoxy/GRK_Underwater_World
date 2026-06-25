@@ -214,7 +214,7 @@
 
 ### 👀 Глянуть
 - `scene/FishSchool.cpp` — стая boids-lite; реакция = flee (стр. 151-158). Косяк инициализируется **вокруг затонувшего корабля**: `Scene.cpp:655` (`school.init(150, wreckPos + (0,7,0), …)`) — рыбы кружат у wreck.
-- `core/ModelLoader.cpp` — импорт Assimp (OBJ/glTF: корабль, кораллы, рыбы).
+- `core/ModelLoader.cpp` — импорт Assimp (OBJ/glTF: камни, пальмы, кораллы, крабы, акула).
 
 ### ⛔ Не читать
 - Внутренности `terrain.frag`, `water.frag`, `Camera.h`.

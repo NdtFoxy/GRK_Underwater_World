@@ -84,9 +84,12 @@ dependencies/
 external/imgui/.git/
 
 # =====================================================================
-#  Large assets — managed via DVC, NOT committed to git
+#  Large binary assets — managed via DVC, NOT committed to git.
+#  (assets/shaders/ stays in git — small GLSL code, visible on GitHub.)
 # =====================================================================
-assets/
+assets/textures/
+assets/3d/
+assets/hdri/
 
 # =====================================================================
 #  AI / agent tooling — local only, never push to GitHub
@@ -110,4 +113,3 @@ docs/superpowers/
 *.typ
 *_files/
 *.pdf
-/assets

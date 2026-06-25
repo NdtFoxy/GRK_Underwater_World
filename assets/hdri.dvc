@@ -1,0 +1,6 @@
+outs:
+- md5: 5c07749ae3ecafd2ffc7850a1340280e.dir
+  size: 271695510
+  nfiles: 2
+  hash: md5
+  path: hdri

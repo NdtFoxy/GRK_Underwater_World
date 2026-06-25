@@ -310,9 +310,6 @@ void Scene::initProps() {
     // Crabs scuttling on the seabed (untextured OBJ → reddish tint).
     int crab = loadPropMesh("assets/3d/animals/crab.obj", 0.7f);
 
-    // The shipwreck hull itself: our wooden boat, placed CAPSIZED at the wreck site.
-    int wreckBoat = loadPropMesh("assets/3d/Asian_Wooden_Boat/Asian_Wooden_Boat.obj", 16.0f);
-
     std::mt19937 rng(0x5EA);
     std::uniform_real_distribution<float> uni(0.0f, 1.0f);
 
@@ -448,22 +445,6 @@ void Scene::initProps() {
             if (spread > 3.5f) continue;
             wreckPos = glm::vec3(wx, h, wz);
             wreckPlaced = true;
-            // The actual wreck: our wooden boat lying CAPSIZED (upside down) on the sand.
-            if (wreckBoat >= 0) {
-                const PropMesh& bpm = propMeshes[wreckBoat];
-                float by = h + bpm.fitHeight * 0.5f;                       // lift so the flipped hull rests on the sand
-                glm::mat4 bm = glm::translate(glm::mat4(1.0f), glm::vec3(wx, by, wz));
-                bm = glm::rotate(bm, 2.3f, glm::vec3(0, 1, 0));            // heading
-                bm = glm::rotate(bm, 3.14159265f, glm::vec3(1, 0, 0));     // FLIP upside down (keel up)
-                bm = glm::rotate(bm, 0.20f, glm::vec3(0, 0, 1));           // slight list → looks wrecked
-                PropInstance pi;
-                pi.meshId = wreckBoat; pi.model = bm;
-                // Weathered driftwood tint (the model's 20-29 MB textures don't
-                // bind through the prop path, so colour it like an old wooden hull).
-                pi.tint = glm::vec3(0.34f, 0.26f, 0.18f); pi.alphaCut = false;
-                pi.lifeDist = 760.0f; pi.lodBias = 1.3f; pi.cullRadius = 60.0f;
-                propInstances.push_back(pi);
-            }
             // Debris field: boulders strewn around the hull.
             for (int k = 0; k < 7; ++k)
                 placeOn(pick(rockIds), wx + (uni(rng)-0.5f)*26.0f,

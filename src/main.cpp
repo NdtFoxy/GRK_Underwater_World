@@ -203,11 +203,6 @@ int main() {
 
     if (glewInit() != GLEW_OK) return -1;
 
-    // Report the context we actually got + whether compute shaders are available.
-    printf("GL version: %s\n", glGetString(GL_VERSION));
-    printf("GLSL version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
-    printf("Compute shaders supported: %s\n", GLEW_ARB_compute_shader ? "yes" : "no");
-    fflush(stdout);
 
     // Setup ImGui context
     IMGUI_CHECKVERSION();

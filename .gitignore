@@ -102,4 +102,12 @@ CLAUDE.md
 GEMINI.md
 .github/copilot-instructions.md
 docs/superpowers/
+
+# =====================================================================
+#  Quarto / generated PDFs (regenerate with: quarto render ... )
+# =====================================================================
+.quarto/
+*.typ
+*_files/
+TEAM_GUIDE.pdf
 /assets

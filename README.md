@@ -32,7 +32,7 @@
 - ![DVC](https://img.shields.io/badge/DVC-945DD6?style=for-the-badge&logo=dvc&logoColor=white)
 
 **Stos technologiczny:**
-- **Rdzeń:** C++20, OpenGL 3.3 core (kontekst 4.x dla sprzętowej teselacji wody).
+- **Rdzeń:** C++20, OpenGL 3.3 core.
 - **Biblioteki:** GLFW (okno/wejście), GLEW (ładowanie GL), GLM (matematyka), Assimp (modele), Dear ImGui (panel), stb_image + tinyexr (tekstury/HDRI).
 - **Narzędzia świata:** Python (generator heightmapy + wizualny edytor).
 - **Zasoby (2 GB):** Backblaze B2 (S3) zarządzane przez **DVC**. Kontrola wersji: Git.

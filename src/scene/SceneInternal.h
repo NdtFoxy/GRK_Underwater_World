@@ -70,8 +70,17 @@ inline int chooseObjectLOD(float distance, float radius, float bias = 1.0f) {
 
 inline glm::vec3 sanitizeMaterialFactor(const glm::vec3& factor, bool missingAlbedo) {
     glm::vec3 f = glm::clamp(factor, glm::vec3(0.0f), glm::vec3(4.0f));
-    if (missingAlbedo && glm::length(f) < 0.08f) {
-        return glm::vec3(0.75f);
+    if (missingAlbedo) {
+        // Untextured prop (lowpoly/stylized rock packs ship no diffuse map).
+        // A flat near-white factor rendered as pale "ghost" blocks, worst
+        // underwater. Pull light flat materials down to a natural stone grey so
+        // texture-less rocks read as rock, not white.
+        if (glm::length(f) < 0.08f) return glm::vec3(0.42f, 0.40f, 0.37f);
+        float lum = (f.x + f.y + f.z) / 3.0f;
+        if (lum > 0.55f) {
+            const glm::vec3 stone = glm::vec3(0.45f, 0.42f, 0.38f);
+            return glm::mix(f, stone, 0.6f);
+        }
     }
     return f;
 }

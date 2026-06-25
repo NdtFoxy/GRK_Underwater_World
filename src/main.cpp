@@ -172,7 +172,6 @@ void processInput(GLFWwindow *window) {
         player.waterCurrent = underwater
             ? curDir * (storm * storm * 2.6f * depthFade)
             : glm::vec3(0.0f);
-        player.shake.turbulence = underwater ? storm * storm * depthFade : 0.0f;
     }
 
     player.update(camera, in, deltaTime);
@@ -397,7 +396,6 @@ int main() {
                 myScene->SetRenderScale(rs);
         }
         ImGui::SliderFloat("Player Speed", &player.playerMaxSpeed, 4.0f, 40.0f, "%.0f");
-        ImGui::SliderFloat("Wave Bob", &player.shake.bobAmplitude, 0.0f, 1.0f, "%.2f");
         if (ImGui::Button("Respawn")) player.respawn(camera);
         if (myScene) {
             ImGui::Checkbox("Flashlight (F)", &myScene->flashlight.enabled);
@@ -438,10 +436,7 @@ int main() {
 
         myScene->Update(window);
 
-        // Apply gentle wave-bob as a view-matrix override for this frame.
-        camera.SetViewOverride(player.getShakenView(camera));
         myScene->Render(camera, waveSpeed, cloudSpeed, waveAmp, timeOfDay, sunDir);
-        camera.ClearViewOverride();
 
         // Minimal HUD: crosshair + admin indicator.
         PlayerHUD::draw(player, screenWidth, screenHeight);

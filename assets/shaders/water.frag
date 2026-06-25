@@ -94,32 +94,9 @@ float ssrLinDepth(float d) {
     return (2.0 * camNear * camFar) / (camFar + camNear - z * (camFar - camNear));
 }
 
-// Screen-space reflection: march the reflected ray in world space, project to the
-// scene snapshot, and return its colour where the ray hits geometry. `outConf` is
-// the hit confidence (0 = missed -> caller keeps the sky reflection).
-vec3 ssrReflect(vec3 startPos, vec3 dir, out float outConf) {
-    outConf = 0.0;
-    if (dir.y < 0.02) return vec3(0.0);            // ray heading down/along -> skip
-    vec3 sp = startPos;
-    float stepLen = 1.8;
-    for (int i = 0; i < 16; ++i) {                 // was 24: fewer SSR steps (water is fill-bound)
-        sp += dir * stepLen;
-        stepLen *= 1.26;                           // grow faster to keep similar reach
-        vec4 clip = uViewProj * vec4(sp, 1.0);
-        if (clip.w <= 0.0) return vec3(0.0);
-        vec3 ndc = clip.xyz / clip.w;
-        vec2 uv = ndc.xy * 0.5 + 0.5;
-        if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return vec3(0.0);
-        float rayZ   = ssrLinDepth(ndc.z * 0.5 + 0.5);
-        float sceneZ = ssrLinDepth(texture(ssrDepth, uv).r);
-        if (rayZ > sceneZ + 0.2 && rayZ < sceneZ + 10.0) {   // ray passed behind geometry -> hit
-            vec2 e = smoothstep(0.0, 0.12, uv) * smoothstep(0.0, 0.12, 1.0 - uv);
-            outConf = e.x * e.y;                   // fade near screen edges
-            return texture(ssrColor, uv).rgb;
-        }
-    }
-    return vec3(0.0);
-}
+// (SSR reflection removed — water reflects only the sky. ssrColor/ssrDepth are
+//  still used below for screen-space REFRACTION, i.e. seeing the seabed through
+//  the water; ssrLinDepth above serves that.)
 
 float saturate(float v) {
     return clamp(v, 0.0, 1.0);

@@ -3,7 +3,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <cmath>
 #include "../scene/Camera.h"
-#include "CameraShake.h"
 
 // ----------------------------------------------------------------------
 // PlayerController
@@ -33,8 +32,6 @@ public:
     float adminDrag     = 6.0f;
 
     glm::vec3 velocity = glm::vec3(0.0f);
-
-    CameraShake  shake;     // now a gentle wave-bob, not a shake
 
     struct Input {
         bool forward = false, backward = false;
@@ -131,21 +128,5 @@ public:
             }
         }
 
-        // ---- wave bob: strongest near the surface, fades with depth ----
-        float depthBelow = waterLevel - camera.Position.y;          // >0 underwater
-        float surfaceFactor = glm::clamp(1.0f - depthBelow / 12.0f, 0.0f, 1.0f);
-        shake.surfaceFactor = surfaceFactor;
-        shake.update(dt);
-    }
-
-    // View matrix with the gentle wave bob applied.
-    glm::mat4 getShakenView(Camera& camera) {
-        glm::vec3 ang    = shake.angularOffset();     // roll only
-        glm::vec3 posOff = shake.positionalOffset();  // vertical bob
-
-        float roll = glm::radians(ang.z);
-        glm::vec3 up = glm::normalize(camera.Up + camera.Right * std::tan(roll));
-        glm::vec3 eye = camera.Position + glm::vec3(0.0f, posOff.y, 0.0f);
-        return glm::lookAt(eye, eye + camera.Front, up);
     }
 };

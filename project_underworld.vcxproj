@@ -46,7 +46,6 @@
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\scene\VegetationSystem.h" />
     <ClInclude Include="src\scene\FishSchool.h" />
-    <ClInclude Include="src\player\CameraShake.h" />
     <ClInclude Include="src\player\PlayerController.h" />
     <ClInclude Include="src\player\PlayerHUD.h" />
     <ClInclude Include="src\player\Flashlight.h" />

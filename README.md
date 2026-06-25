@@ -21,12 +21,9 @@
 
 ### 👥 Skład grupy
 
-> ✏️ **UZUPEŁNIĆ:** wpiszcie pełne imiona i nazwiska + numer grupy (wymagane w README).
-
-- **Grupa nr:** `<numer>`
-- Mykyta Kyslytsia
-- Artem `<nazwisko>`
-- `<imię>` `<nazwisko>`
+- **Mykyta Kyslytsia**
+- **Aliaksandra Mantulenka**
+- **Artem Isianov**
 
 **Wybrane metody:** **A07** — Instanced rendering with LOD · **B07** — Heightmap-based seabed mesh
 

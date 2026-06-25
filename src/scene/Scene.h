@@ -93,6 +93,9 @@ public:
         for (const auto& c : creatures) if (c.isShark) return c.pos;
         return glm::vec3(0.0f);
     }
+    // Current world position of the patrolling sea-serpent (PTF body),
+    // updated each frame in Scene_Render — used by the teleport UI.
+    glm::vec3 GetSerpentPos() const { return serpentPos; }
     // 0..1 while the shark is hunting nearby — drives the panic post FX.
     float GetSharkThreat() const { return sharkThreat; }
 
@@ -228,6 +231,7 @@ private:
     // === Parallel Transport Frames sea-serpent ==============
     GLuint     splineProgram = 0;
     SplinePath serpent;
+    glm::vec3  serpentPos = glm::vec3(0.0f);   // current patrol position (for teleport UI)
 
     // === Shared object shader (static props + animated creatures) ==========
     GLuint                       objectProgram = 0;

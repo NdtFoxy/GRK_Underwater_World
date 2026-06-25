@@ -366,6 +366,17 @@ int main() {
                     player.velocity = glm::vec3(0.0f);
                 }
             }
+            {
+                glm::vec3 sp = myScene->GetSerpentPos();
+                float dsp = std::sqrt((sp.x - camera.Position.x) * (sp.x - camera.Position.x)
+                                    + (sp.z - camera.Position.z) * (sp.z - camera.Position.z));
+                ImGui::Text("Serpent (%5.0f, %4.0f, %5.0f)  %4.0f m", sp.x, sp.y, sp.z, dsp);
+                ImGui::SameLine();
+                if (ImGui::SmallButton("Go##serpent")) {
+                    camera.Position = sp + glm::vec3(10.0f, 4.0f, 0.0f);
+                    player.velocity = glm::vec3(0.0f);
+                }
+            }
             ImGui::Separator();
         }
 

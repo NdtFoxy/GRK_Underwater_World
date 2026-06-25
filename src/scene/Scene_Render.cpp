@@ -287,6 +287,9 @@ void Scene::Render(Camera& camera, float waveSpeed, float cloudSpeed, float wave
             centerY = std::max(baseDepth, topY + 9.0f);   // clear the seabed
         centerY = std::min(centerY, waterLevel - 6.0f);   // stay underwater
 
+        // Expose the serpent's current world position for the teleport UI.
+        serpentPos = glm::vec3(headXZ.x, centerY, headXZ.z);
+
         glm::mat4 sModel = serpent.patrolModel(time, glm::vec3(0.0f, centerY, 0.0f),
                                                orbitR, orbitSpeed);
         setMat4(splineProgram, "model", sModel);

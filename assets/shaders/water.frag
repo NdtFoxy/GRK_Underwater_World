@@ -595,7 +595,7 @@ void main() {
         // flat opaque blue 'plastic' sheet.
         vec2 suv    = gl_FragCoord.xy / screenSize;
         float surfZ = ssrLinDepth(gl_FragCoord.z);
-        vec2 refrUV = clamp(suv + finalNormal.xz * 0.012, vec2(0.001), vec2(0.999));  // low distortion: avoids ghost/phantom doubling of rocks poking through
+        vec2 refrUV = suv;  // NO refraction distortion: underwater image aligns 1:1 with the surface → no phantom/ghost copy of rocks poking through
         float sceneZ = ssrLinDepth(texture(ssrDepth, refrUV).r);
         // Reject the distortion if it samples something IN FRONT of the surface.
         if (sceneZ < surfZ) {

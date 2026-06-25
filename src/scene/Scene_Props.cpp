@@ -458,7 +458,9 @@ void Scene::initProps() {
                 bm = glm::rotate(bm, 0.20f, glm::vec3(0, 0, 1));           // slight list → looks wrecked
                 PropInstance pi;
                 pi.meshId = wreckBoat; pi.model = bm;
-                pi.tint = glm::vec3(0.78f, 0.80f, 0.84f); pi.alphaCut = false;
+                // Weathered driftwood tint (the model's 20-29 MB textures don't
+                // bind through the prop path, so colour it like an old wooden hull).
+                pi.tint = glm::vec3(0.34f, 0.26f, 0.18f); pi.alphaCut = false;
                 pi.lifeDist = 760.0f; pi.lodBias = 1.3f; pi.cullRadius = 60.0f;
                 propInstances.push_back(pi);
             }

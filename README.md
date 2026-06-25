@@ -19,6 +19,17 @@
 
 **Opis projektu:** Renderowany w czasie rzeczywistym świat podwodny w stylu *Subnautiki* — napisany **w całości ręcznie** w OpenGL 3.3 core, bez użycia silnika gry. Ocean z falami **Gerstnera**, dno generowane z **heightmapy** z biomami PBR, kaustyki (render-to-texture), roślinność przez **instancing + LOD**, wolumetryczne promienie światła (god rays), cykl **dnia i nocy**, sztormy oraz system gracza (pływanie, latarka, kolizje z terenem). Cały rendering, oświetlenie, woda, cząsteczki i fizyka gracza są zaimplementowane od zera.
 
+### 👥 Skład grupy
+
+> ✏️ **UZUPEŁNIĆ:** wpiszcie pełne imiona i nazwiska + numer grupy (wymagane w README).
+
+- **Grupa nr:** `<numer>`
+- Mykyta Kyslytsia
+- Artem `<nazwisko>`
+- `<imię>` `<nazwisko>`
+
+**Wybrane metody:** **A07** — Instanced rendering with LOD · **B07** — Heightmap-based seabed mesh
+
 ### Built With
 
 - ![C++](https://img.shields.io/badge/C%2B%2B_20-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)

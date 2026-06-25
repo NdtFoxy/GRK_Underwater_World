@@ -17,7 +17,7 @@
   </p>
 </div>
 
-**Opis projektu:** Renderowany w czasie rzeczywistym świat podwodny w stylu *Subnautiki* — napisany **w całości ręcznie** w OpenGL 3.3 core, bez użycia silnika gry. Ocean z falami **Gerstnera**, dno generowane z **heightmapy** z biomami PBR, kaustyki (render-to-texture), roślinność przez **instancing + LOD**, wolumetryczne promienie światła (god rays), cykl **dnia i nocy**, sztormy oraz system gracza (tlen, latarka, kolizje). Cały rendering, oświetlenie, woda, cząsteczki i fizyka gracza są zaimplementowane od zera.
+**Opis projektu:** Renderowany w czasie rzeczywistym świat podwodny w stylu *Subnautiki* — napisany **w całości ręcznie** w OpenGL 3.3 core, bez użycia silnika gry. Ocean z falami **Gerstnera**, dno generowane z **heightmapy** z biomami PBR, kaustyki (render-to-texture), roślinność przez **instancing + LOD**, wolumetryczne promienie światła (god rays), cykl **dnia i nocy**, sztormy oraz system gracza (pływanie, latarka, kolizje z terenem). Cały rendering, oświetlenie, woda, cząsteczki i fizyka gracza są zaimplementowane od zera.
 
 ### Built With
 
@@ -102,7 +102,7 @@ Wszystkie **6 metod obowiązkowych** jest zaimplementowanych:
           <summary>🤿 <kbd>📁 player</kbd> ── <i>Gracz</i></summary>
           <blockquote>
             🎮 <code>PlayerController.h</code> ── Pływanie, inercja, kolizja z terenem<br>
-            💨 <code>OxygenSystem.h</code> ── Tlen · 🔦 <code>Flashlight.h</code> ── Latarka · 📟 <code>PlayerHUD.h</code> ── HUD
+            🔦 <code>Flashlight.h</code> ── Latarka · 📟 <code>PlayerHUD.h</code> ── HUD (celownik)
           </blockquote>
         </details>
         🔸 <kbd>📁 core</kbd> ── Loadery danych: <code>HeightmapLoader</code> (stb_image), <code>ModelLoader</code> (Assimp)
@@ -219,7 +219,7 @@ Gotowy plan demo — wykonuj punkty po kolei, wszystko klika się z panelu ImGui
 | **2:30** | **🌅 Cykl dnia i nocy** — słońce przesuwa się, zmienia się światło, cienie, kolor wody i god rays | suwak **Time of Day** 0→24 |
 | **3:00** | **⛈️ Sztorm i pogoda** — deszcz, błyskawice, wzburzone morze | klawisz **K** lub preset pogody |
 | **3:20** | **🐟 Ryby reagują** — podpłyń do ławicy, ryby **uciekają od nurka** (promień 8 m, im bliżej, tym silniej) | podpłyń blisko ławicy |
-| **3:40** | **🐍 PTF — wąż morski** wzdłuż splajnu + **🔦 latarka** + **HUD tlenu** | obserwuj węża, `F` |
+| **3:40** | **🐍 PTF — wąż morski** wzdłuż splajnu + **🔦 latarka** | obserwuj węża, `F` |
 | **4:00** | **🛰️ Sonar** — fala w ciemności odkrywa teren i koloruje rekina/ryby | klawisz **Q** |
 | **4:30** | **Points of Interest** — szybki skok do wraku / rekina jako finał | panel → **Go** przy obiekcie |
 

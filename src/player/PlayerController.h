@@ -3,7 +3,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <cmath>
 #include "../scene/Camera.h"
-#include "OxygenSystem.h"
 #include "CameraShake.h"
 
 // ----------------------------------------------------------------------
@@ -11,12 +10,10 @@
 //
 // Subnautica-style swimming controller on top of the free-fly Camera.
 //   * velocity-based movement with smooth acceleration + water drag
-//   * Player mode  : oxygen drains underwater and refills when the head
-//                    breaks the surface. You CAN surface to breathe —
-//                    there's a soft height cap above the water, not a
-//                    hard wall. Running out of air fades to black and
-//                    respawns at the spawn point.
-//   * Admin mode   : free noclip flight, no oxygen, no bounds.
+//   * Player mode  : bounded swimming. A soft height cap lets you bob at
+//                    the surface (not a hard wall); seabed collision keeps
+//                    you above the terrain.
+//   * Admin mode   : free noclip flight, no bounds.
 //   * gentle wave bob at the surface (no jittery camera shake).
 // ----------------------------------------------------------------------
 class PlayerController {
@@ -37,7 +34,6 @@ public:
 
     glm::vec3 velocity = glm::vec3(0.0f);
 
-    OxygenSystem oxygen;
     CameraShake  shake;     // now a gentle wave-bob, not a shake
 
     struct Input {
@@ -49,7 +45,7 @@ public:
 
     // World bounds / surface behaviour.
     float waterLevel    = 0.0f;     // surface Y
-    float breatheMargin = 2.5f;     // how far above the surface you may rise
+    float surfaceMargin = 2.5f;     // how far above the surface you may rise
     float floorLevel    = -300.0f;  // hard lower bound (deep abyss reachable)
     glm::vec3 spawnPoint = glm::vec3(0.0f, -6.0f, 0.0f);
 
@@ -64,40 +60,12 @@ public:
     // you must actively swim against it in a storm.
     glm::vec3 waterCurrent = glm::vec3(0.0f);
 
-    // Death / respawn (fade to black).
-    bool  isDead     = false;
-    float deathFade  = 0.0f;     // 0 clear, 1 full black
-    float fadeInSpeed  = 1.6f;
-    float fadeOutSpeed = 1.2f;
-
-    // Reported each frame so the HUD knows if the head is in air.
-    bool headAboveWater = false;
-
     void respawn(Camera& camera) {
         camera.Position = spawnPoint;
         velocity = glm::vec3(0.0f);
-        oxygen.reset();
-        isDead = false;
     }
 
     void update(Camera& camera, const Input& in, float dt) {
-        // ---- death fade ----
-        if (isDead) {
-            deathFade += fadeInSpeed * dt;
-            if (deathFade >= 1.0f) {
-                deathFade = 1.0f;
-                camera.Position = spawnPoint;
-                velocity = glm::vec3(0.0f);
-                oxygen.reset();
-                isDead = false;
-            }
-            shake.update(dt);
-            return;
-        } else if (deathFade > 0.0f) {
-            deathFade -= fadeOutSpeed * dt;
-            if (deathFade < 0.0f) deathFade = 0.0f;
-        }
-
         // ---- desired direction ----
         glm::vec3 wish(0.0f);
         if (in.forward)  wish += camera.Front;
@@ -133,10 +101,10 @@ public:
 
         // ---- soft surface behaviour (Player mode) ----
         if (mode == Mode::Player) {
-            // You may rise up to `waterLevel + breatheMargin`. Above the
+            // You may rise up to `waterLevel + surfaceMargin`. Above the
             // surface, buoyancy gently pushes you back down instead of
             // a hard wall — feels like bobbing at the surface.
-            float hardCeiling = waterLevel + breatheMargin;
+            float hardCeiling = waterLevel + surfaceMargin;
             if (camera.Position.y > hardCeiling) {
                 camera.Position.y = hardCeiling;
                 if (velocity.y > 0.0f) velocity.y = 0.0f;
@@ -145,7 +113,7 @@ public:
             // the further out, the stronger the gentle pull-down.
             if (camera.Position.y > waterLevel) {
                 float over = camera.Position.y - waterLevel;
-                float buoyancy = over / breatheMargin;        // 0..1
+                float buoyancy = over / surfaceMargin;        // 0..1
                 velocity.y -= buoyancy * 9.0f * dt;           // soft gravity
             }
             if (camera.Position.y < floorLevel) {
@@ -168,17 +136,6 @@ public:
         float surfaceFactor = glm::clamp(1.0f - depthBelow / 12.0f, 0.0f, 1.0f);
         shake.surfaceFactor = surfaceFactor;
         shake.update(dt);
-
-        // ---- oxygen ----
-        // Head is "above water" (breathing) when the eye rises above the
-        // surface line. Refill there, drain below.
-        headAboveWater = camera.Position.y >= waterLevel;
-        oxygen.godMode = (mode == Mode::Admin);
-        oxygen.update(dt, /*isUnderwater*/ !headAboveWater);
-
-        if (mode == Mode::Player && oxygen.isOutOfAir() && !headAboveWater) {
-            isDead = true;
-        }
     }
 
     // View matrix with the gentle wave bob applied.

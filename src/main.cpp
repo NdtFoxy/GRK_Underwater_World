@@ -51,7 +51,7 @@ float lastY = screenHeight / 2.0f;
 bool firstMouse = true;
 bool rightMousePressed = false;
 
-// Player (movement, oxygen, gentle wave bob)
+// Player (movement, gentle wave bob)
 PlayerController player;
 
 // Timing
@@ -374,13 +374,12 @@ int main() {
 
         // --- Player / Admin mode toggle ---
         int modeIdx = (player.mode == PlayerController::Mode::Admin) ? 1 : 0;
-        const char* modes[] = { "Player (oxygen)", "Admin (noclip)" };
+        const char* modes[] = { "Player (swim)", "Admin (noclip)" };
         if (ImGui::Combo("Mode", &modeIdx, modes, 2)) {
             player.mode = (modeIdx == 1) ? PlayerController::Mode::Admin
                                          : PlayerController::Mode::Player;
         }
         ImGui::Text("FPS: %.0f  (%.1f ms)", gFpsAvg, gFpsAvg > 0.0f ? 1000.0f / gFpsAvg : 0.0f);
-        ImGui::Text("Oxygen: %.0f / %.0f", player.oxygen.oxygen, player.oxygen.maxOxygen);
         if (myScene) {
             float rs = myScene->GetRenderScale();
             if (ImGui::SliderFloat("Render Scale", &rs, 0.5f, 1.0f, "%.2fx"))
@@ -433,8 +432,8 @@ int main() {
         myScene->Render(camera, waveSpeed, cloudSpeed, waveAmp, timeOfDay, sunDir);
         camera.ClearViewOverride();
 
-        // Subnautica-style HUD: oxygen gauge + death fade-to-black.
-        PlayerHUD::draw(player.oxygen, player, screenWidth, screenHeight);
+        // Minimal HUD: crosshair + admin indicator.
+        PlayerHUD::draw(player, screenWidth, screenHeight);
 
         // Render ImGui
         ImGui::Render();

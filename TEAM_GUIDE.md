@@ -51,7 +51,7 @@ project_underworld/
 │  ├─ core/                   загрузчики данных
 │  ├─ render/                 низкоуровневые GL-обёртки
 │  ├─ scene/                  СЦЕНА и все системы (основная масса кода)
-│  └─ player/                 игрок: камера, кислород, фонарь, HUD
+│  └─ player/                 игрок: камера, плавание, фонарь, HUD
 ├─ assets/
 │  ├─ shaders/                ВСЕ GLSL (каждая система = пара .vert/.frag)
 │  │  └─ lib/                 общие GLSL-инклуды (foam_lib, ocean_lib)
@@ -107,10 +107,9 @@ project_underworld/
 | Файл | Что делает |
 |---|---|
 | `PlayerController.h` | Физика плавания: ввод → скорость, инерция, коллизия с террейном. |
-| `OxygenSystem.h` | Кислород (расход/восстановление у поверхности). |
 | `Flashlight.h` | Фонарь (конусный свет, `flashlight.glsl`). |
 | `CameraShake.h` | Тряска камеры (взрывы/удары). |
-| `PlayerHUD.h` | HUD: кислород, глубина. |
+| `PlayerHUD.h` | HUD: прицел + индикатор Admin. |
 
 ### `assets/shaders/` — по парам на систему
 `terrain.*` `seabed.*` (террейн, PBR+нормалмап) · `water_tess.{vert,tesc,tese}` + `water.frag` (тесселированная Gerstner-поверхность) · `surf.*` `spray.*` (прибой/брызги) · `caustics.*` · `vegetation.*` (инстансинг) · `object.*` (пропсы/существа) · `fish.*` · `spline.*` (PTF-змей) · `depth.*` (shadow) · `skybox.*` `sky.*` `clouds.*` (небо/кубмап) · `screen.*` (пост-обработка) · `lib/*.glsl` (общие инклуды: `foam_lib`, `ocean_lib`).

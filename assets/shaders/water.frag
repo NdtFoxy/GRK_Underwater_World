@@ -604,7 +604,10 @@ void main() {
         }
         float waterDepth = max(sceneZ - surfZ, 0.0);         // metres of water column
         vec3  sceneBehind = texture(ssrColor, refrUV).rgb;   // the seabed seen through the water
-        float absorb = clamp(1.0 - exp(-waterDepth * 0.05), 0.0, 1.0);
+        // Higher absorption: water turns to its body colour within a few metres of
+        // depth, so submerged rocks fade out instead of showing as pale "ghost"
+        // copies behind the ones poking through (the artifact near islands).
+        float absorb = clamp(1.0 - exp(-waterDepth * 0.14), 0.0, 1.0);
         // Shallow -> seabed; mid -> turquoise body; DEEP -> dark navy. Real deep water
         // absorbs almost all light, so from above it is near-black blue, NOT a bright
         // flat blue — that bright flat body colour was the 'plastic' look.

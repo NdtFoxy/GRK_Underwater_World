@@ -3,8 +3,8 @@ Heightmap generator / editor for Project Underworld.
 
 This tool produces RGB PNG heightmaps that match the project's
 "zmapGradient" encoding (see src/core/HeightmapLoader.cpp), plus the
-Subnautica-style biome masks (M_Lava / M_Castle / M_River) the engine
-reads to light up biomes.
+Subnautica-style biome mask (M_Lava) the engine reads to light up the
+lava biome. (The Castle and River biomes were removed — they were unused.)
 
 Usage:
     # List built-in procedural presets
@@ -183,9 +183,7 @@ def smoothstep_np(a, b, x):
 class PresetResult:
     depth: np.ndarray
     mask:  np.ndarray
-    lava:   np.ndarray = None
-    castle: np.ndarray = None
-    river:  np.ndarray = None
+    lava:   np.ndarray = None   # the only biome mask (Castle/River removed)
 
 
 def preset_atoll(size: int, seed: int = 42, coverage: str = "full") -> PresetResult:
@@ -309,20 +307,14 @@ def preset_world(size: int, seed: int = 1234, coverage: str = "full") -> PresetR
 
     mask = np.ones(shape, dtype=bool)
 
-    # ---- biome masks (FIXED so lava is only in the deep, not everywhere) ----
+    # ---- biome mask: only LAVA (Castle/River biomes removed — unused) ----
     # LAVA: deep zones only (depth more negative than ~-150), patchy.
     deepZone = smoothstep_np(-150.0, -250.0, depth)       # 0 shallow → 1 deep
     lava = np.clip(deepZone * smoothstep_np(0.5, 0.78, warm) * 1.3, 0.0, 1.0).astype(np.float32)
-    # CASTLE / grassy shelf: the shallow flat reef (depth -6..-40).
-    shelfBand = smoothstep_np(-45.0, -10.0, depth)
-    castle = np.clip(shelfBand * smoothstep_np(0.5, 0.7, base) * 0.9, 0.0, 1.0).astype(np.float32)
-    # RIVER / kelp channels: along the canyons, mid depth.
-    river = np.clip(canyonMask * smoothstep_np(-120.0, -25.0, depth), 0.0, 1.0).astype(np.float32)
 
     # The whole world is solid terrain (no cave holes). The terrain
     # presence mask stays fully valid.
-    return PresetResult(depth=depth.astype(np.float32), mask=mask,
-                        lava=lava, castle=castle, river=river)
+    return PresetResult(depth=depth.astype(np.float32), mask=mask, lava=lava)
 
 
 def preset_deep(size: int, seed: int = 4321, coverage: str = "full") -> PresetResult:
@@ -357,13 +349,9 @@ def preset_deep(size: int, seed: int = 4321, coverage: str = "full") -> PresetRe
     warm = fbm(shape, base_freq=0.005, octaves=4, seed=seed + 500)
     centreFall = radial_falloff(shape, inner=0.0, outer=0.55)
     lava = np.clip(centreFall * smoothstep_np(0.4, 0.7, warm) * 1.6, 0.0, 1.0).astype(np.float32)
-    river = np.clip(smoothstep_np(0.85, 0.97, ridged_fbm(shape, 0.004, 4, seed + 600))
-                    * (1.0 - centreFall), 0.0, 1.0).astype(np.float32)
-    castle = np.zeros(shape, dtype=np.float32)
 
     # Solid terrain (no cave holes).
-    return PresetResult(depth=depth.astype(np.float32), mask=mask,
-                        lava=lava, castle=castle, river=river)
+    return PresetResult(depth=depth.astype(np.float32), mask=mask, lava=lava)
 
 
 PRESETS = {
@@ -382,8 +370,6 @@ def write_all(result: PresetResult, out_path: str, also_masks: bool):
         out_dir = os.path.dirname(os.path.abspath(out_path))
         for fname, field, col in [
             ("M_Lava_Depth_Mask.png",   result.lava,   (255, 60, 20)),
-            ("M_Castle_Depth_Mask.png", result.castle, (120, 200, 120)),
-            ("M_River_Depth_Mask.png",  result.river,  (60, 160, 255)),
         ]:
             if field is not None:
                 encode_biome_mask(field, col).save(os.path.join(out_dir, fname))
@@ -398,13 +384,11 @@ def run_editor(size: int, load_path: str | None):
     from tkinter import filedialog, messagebox
     from PIL import ImageTk
 
-    # ----- state: depth + terrain mask + 3 biome fields ---------------
+    # ----- state: depth + terrain mask + lava biome field -------------
     st = {
         "depth":  np.full((size, size), -120.0, dtype=np.float32),
         "tmask":  np.ones((size, size), dtype=bool),     # terrain present
         "lava":   np.zeros((size, size), dtype=np.float32),
-        "castle": np.zeros((size, size), dtype=np.float32),
-        "river":  np.zeros((size, size), dtype=np.float32),
         "layer":  "depth",     # which thing the brush paints
         "depth_val": -10.0,
         "brush":  max(10, size // 30),
@@ -440,10 +424,8 @@ def run_editor(size: int, load_path: str | None):
         # Depth darkness preview: deeper => darker.
         dn = np.clip(1.0 + st["depth"] / 220.0, 0.05, 1.0)[..., None]
         rgb *= dn
-        # Overlay biome tints.
-        rgb[..., 0] += st["lava"]   * 180.0
-        rgb[..., 1] += st["castle"] * 120.0
-        rgb[..., 2] += st["river"]  * 150.0
+        # Overlay the lava biome tint (red).
+        rgb[..., 0] += st["lava"] * 180.0
         return np.clip(rgb, 0, 255).astype(np.uint8)
 
     def refresh():
@@ -521,7 +503,7 @@ def run_editor(size: int, load_path: str | None):
     tk.Label(root, text="LAYER (what the brush paints)", **PS).grid(row=nextrow(), column=col, sticky="w", padx=6)
     layer_var = tk.StringVar(value="depth")
     layers = [("Terrain depth", "depth"),
-              ("Lava biome", "lava"), ("Castle biome", "castle"), ("River biome", "river")]
+              ("Lava biome", "lava")]
     lf = tk.Frame(root, bg="#181818"); lf.grid(row=nextrow(), column=col, sticky="we", padx=6)
     for txt, val in layers:
         tk.Radiobutton(lf, text=txt, value=val, variable=layer_var,
@@ -565,8 +547,6 @@ def run_editor(size: int, load_path: str | None):
         st["depth"][...] = res.depth
         st["tmask"][...] = res.mask
         st["lava"][...]   = res.lava   if res.lava   is not None else 0.0
-        st["castle"][...] = res.castle if res.castle is not None else 0.0
-        st["river"][...]  = res.river  if res.river  is not None else 0.0
         refresh()
 
     tk.Label(root, text="Load preset", **PS).grid(row=nextrow(), column=col, sticky="w", padx=6)
@@ -577,17 +557,15 @@ def run_editor(size: int, load_path: str | None):
 
     # ---- default test masks ----
     def default_masks():
-        """Quick procedural biome masks for testing without a preset:
-        lava in the deep centre, castle on the shelf, river in mid-band."""
+        """Quick procedural lava biome for testing without a preset:
+        lava in the deep centre."""
         yy, xx = np.mgrid[0:size, 0:size].astype(np.float32)
         r = np.sqrt(((xx - size/2)/(size/2))**2 + ((yy - size/2)/(size/2))**2)
         st["lava"][...]   = np.clip(smoothstep_np(0.0, 0.35, 0.35 - r), 0, 1) * \
                             smoothstep_np(-260, -100, -st["depth"])
-        st["castle"][...] = smoothstep_np(-28, -5, st["depth"]) * (1 - smoothstep_np(-5, 10, st["depth"]))
-        st["river"][...]  = smoothstep_np(0.45, 0.6, r) * (1 - smoothstep_np(0.6, 0.8, r))
         refresh()
 
-    tk.Button(root, text="Generate default test biomes", relief="flat",
+    tk.Button(root, text="Generate default test biome (lava)", relief="flat",
               bg="#5a3d80", fg="#fff", command=default_masks
               ).grid(row=nextrow(), column=col, sticky="we", padx=6, pady=(8, 2))
 
@@ -600,8 +578,6 @@ def run_editor(size: int, load_path: str | None):
         st["depth"][...]  = res.depth
         st["tmask"][...]  = res.mask
         st["lava"][...]   = res.lava
-        st["castle"][...] = res.castle
-        st["river"][...]  = res.river
         refresh()
         target = os.path.abspath(os.path.join("assets", "textures", "world",
                                               "T_World_Heightmap.png"))
@@ -629,8 +605,7 @@ def run_editor(size: int, load_path: str | None):
 
     # ---- file actions ----
     def build_result():
-        return PresetResult(depth=st["depth"], mask=st["tmask"],
-                            lava=st["lava"], castle=st["castle"], river=st["river"])
+        return PresetResult(depth=st["depth"], mask=st["tmask"], lava=st["lava"])
 
     def save_as():
         path = filedialog.asksaveasfilename(defaultextension=".png",
@@ -669,8 +644,7 @@ def run_editor(size: int, load_path: str | None):
               command=save_as).pack(side="left", padx=2)
     tk.Button(af, text="Reset", relief="flat", bg="#b71c1c", fg="#fff", width=10,
               command=lambda: (st["depth"].fill(-120.0), st["tmask"].fill(True),
-                               st["lava"].fill(0), st["castle"].fill(0),
-                               st["river"].fill(0), refresh())).pack(side="left", padx=2)
+                               st["lava"].fill(0), refresh())).pack(side="left", padx=2)
 
     tk.Button(root, text="APPLY TO PROJECT (heightmap + masks)", relief="flat",
               bg="#0277bd", fg="#fff", font=("Segoe UI", 10, "bold"),

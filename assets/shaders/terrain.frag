@@ -345,7 +345,7 @@ vec3 pbrLight(vec3 N, vec3 V, vec3 L, vec3 radiance,
 
 // ---------- shadow mapping with large-radius PCF --------------------
 // Underwater light is heavily scattered, so hard shadow edges look
-// wrong. We sample a wide 5x5 kernel (with an extra spread multiplier)
+// wrong. We sample a 3x3 kernel (9 taps) with an extra spread multiplier
 // for very soft, diffuse shadows from kelp and rocks. Returns 1.0 fully
 // lit, 0.0 fully shadowed.
 float computeShadow(vec4 fragPosLight, vec3 N, vec3 L) {

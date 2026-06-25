@@ -389,7 +389,7 @@ void Scene::createTerrainFromHeightmap() {
     // (chunks). Each chunk records its AABB and its contiguous slice of
     // the shared index buffer, so at draw time we submit only the chunks
     // inside the camera frustum. Vertex data is untouched → identical look.
-    const int CHUNK = 128;   // grid cells per chunk side (~13 chunks across)
+    const int CHUNK = 128;   // grid cells per chunk side (1024/128 = 8 chunks across, 64 total)
     std::vector<unsigned int> indices;
     indices.reserve((gridW - 1) * (gridH - 1) * 6);
     terrainChunks.clear();
@@ -489,8 +489,8 @@ void Scene::createTerrainFromHeightmap() {
               << terrainChunks.size() << " chunks" << std::endl;
 
     // --- Build a downsampled collision height field --------------
-    // We don't need the full 1536² grid for collision; a 384² field
-    // gives ~3m resolution over a 1200u world, which is plenty to keep
+    // We don't need the full 1024² grid for collision; a 384² field
+    // gives ~4m resolution over the 1600u world, which is plenty to keep
     // the player from sinking through the seabed.
     {
         collisionRes = 384;

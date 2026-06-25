@@ -116,7 +116,8 @@ public:
         glm::quat newOri = glm::normalize(qYaw * qPitch * Orientation);
 
         // Soft pitch clamp: reject the update if it would tip the view
-        // past ~89° (prevents the camera flipping over the top/bottom).
+        // past ~80° (the 0.985 = sin 80° limit below) — prevents the camera
+        // flipping over the top/bottom poles.
         if (constrainPitch) {
             glm::vec3 newFront = glm::normalize(newOri * glm::vec3(0, 0, -1));
             if (newFront.y > 0.985f || newFront.y < -0.985f) {

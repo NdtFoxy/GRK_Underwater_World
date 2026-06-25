@@ -117,12 +117,12 @@ Wszystkie **6 metod obowiązkowych** jest zaimplementowanych:
       </blockquote>
     </details>
     <details>
-      <summary>🟧 <kbd>📁 assets</kbd> ── <i>Zasoby (2 GB, przez DVC) 📦</i></summary>
+      <summary>🟧 <kbd>📁 assets</kbd> ── <i>Shadery w gicie · ciężkie zasoby (2 GB) w DVC 📦</i></summary>
       <blockquote>
-        🎨 <code>shaders/</code> ── Wszystkie GLSL (każdy system = para .vert/.frag) + <code>lib/</code><br>
-        🧱 <code>textures/</code> ── Zestawy PBR biomów, heightmapa, maski biomów<br>
-        🐚 <code>3d/ models/</code> ── Modele (korale, kelp, stworzenia)<br>
-        🌅 <code>hdri/ audio/</code> ── Środowisko i pętle dźwiękowe
+        🎨 <code>shaders/</code> ── Wszystkie GLSL (każdy system = para .vert/.frag) + <code>lib/</code> — <b>w gicie</b><br>
+        🧱 <code>textures/</code> ── Zestawy PBR biomów, heightmapa, maski biomów — DVC<br>
+        🐚 <code>3d/</code> ── Modele (korale, kelp, stworzenia) — DVC<br>
+        🌅 <code>hdri/</code> ── Środowisko (HDRI) — DVC
       </blockquote>
     </details>
     <details>
@@ -131,7 +131,7 @@ Wszystkie **6 metod obowiązkowych** jest zaimplementowanych:
         🔷 <b><kbd>project_underworld.vcxproj</kbd></b> ── <i>Główny build (Visual Studio, Win32)</i><br>
         🧩 <code>CMakeLists.txt</code> ── Build wieloplatformowy (mac/linux)<br>
         🐍 <code>generate_heightmap.py</code> ── Generator świata + wizualny edytor<br>
-        📦 <code>assets.dvc</code> ── Wskaźnik DVC na ciężkie zasoby<br>
+        📦 <code>assets/{textures,3d,hdri}.dvc</code> ── Wskaźniki DVC na ciężkie zasoby<br>
         📖 <code>README.md</code> ── Ten plik · 🧭 <code>TEAM_GUIDE.md</code> ── Wewnętrzna mapa kodu
       </blockquote>
     </details>
@@ -154,7 +154,7 @@ cd GRK_Underwater_World
 
 ## 🗄️ 2. Zasoby (DVC + Backblaze B2)
 
-Ciężkie zasoby (tekstury, modele, HDRI — łącznie **2 GB**) są poza Gitem, zarządzane przez **DVC** na zdalnym dysku Backblaze B2.
+Kod i **shadery** są w gicie (widoczne na GitHub). Tylko **ciężkie zasoby binarne** (tekstury, modele 3D, HDRI — łącznie **2 GB**) są poza Gitem, zarządzane przez **DVC** na Backblaze B2.
 
 > [!CAUTION]
 > **Wymagany klucz dostępu.** Repozytorium używa prywatnego remote'a Backblaze B2 (S3). Żeby pobrać zasoby, potrzebujesz klucza aplikacyjnego.

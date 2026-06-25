@@ -124,9 +124,13 @@ void VegetationSystem::buildLOD(LODMesh& out, int cardCount, int segments,
 }
 
 bool VegetationSystem::init(float plantHeight, float plantWidth) {
-    // LOD0 = 4 cards × 6 segments → 96 tris (close detail)
-    // LOD1 = 2 cards × 4 segments → 32 tris
-    // LOD2 = 1 card  × 2 segments →  4 tris (silhouette only)
+    // Procedural fallback cards (used by seagrass / island grass; coral & kelp
+    // replace these via loadModel()). Each card = `segments` quads = 2*segments
+    // triangles, with `cardCount` cards per LOD:
+    //   LOD0 = 4 cards x 6 segments = 48 tris  (close detail)
+    //   LOD1 = 2 cards x 4 segments = 16 tris
+    //   LOD2 = 1 card  x 2 segments =  4 tris  (silhouette only)
+    // Exact counts are printed at startup: "Vegetation LODs built: a / b / c".
     buildLOD(lods[0], 4, 6, plantHeight, plantWidth);
     buildLOD(lods[1], 2, 4, plantHeight, plantWidth);
     buildLOD(lods[2], 1, 2, plantHeight, plantWidth);
@@ -332,7 +336,7 @@ float valueNoise(float x, float y) {
 // up the heightmap, and accept the point only if:
 //   * it isn't NO_TERRAIN
 //   * the world-space height is in [minWorldY, maxWorldY]
-//   * the slope (computed from neighbours) is below ~0.4 (~25°)
+//   * the slope (height delta over a 2-texel step, see below) is under 0.6
 //   * (optional) the point falls inside a noise "meadow" patch
 // ----------------------------------------------------------------------
 void VegetationSystem::scatter(int targetCount,

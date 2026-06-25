@@ -109,5 +109,5 @@ docs/superpowers/
 .quarto/
 *.typ
 *_files/
-TEAM_GUIDE.pdf
+*.pdf
 /assets

@@ -13,7 +13,7 @@
 | Кто | Домен | Метод A/B | Обязательные | Демо-интерактив |
 |---|---|---|---|---|
 | **Микита** | террейн, материалы, свет | 🟦 **B07** | Normal · PBR · Shadow+PCF | 🌅 день/ночь · ⛈️ погода |
-| **Артём** | кадр, камера, вода, пост | — (владелец кадра) | Quaternion-камера · Cubemap | 🌊 волны |
+| **Артём** | кадр, камера, вода, пост, эффекты (god rays, каустика, облака, сонар, акула) | — (владелец кадра) | Quaternion-камера · Cubemap | 🌊 волны |
 | **Саша** | инстансинг, растительность, существа | 🟩 **A07** | Parallel Transport Frames | 🐟 рыбы реагируют |
 
 ---
@@ -154,6 +154,14 @@
 
 **🌊 Вода Gerstner** (НЕ graded): `WaveField.h` (153 стр.) — сумма синусоид, одна таблица → и поверхность, и плавучесть.
 
+**🌫️ Эффекты атмосферы/воды/существ (тоже на тебе — владелец кадра):**
+
+- **God rays / лучи света:** `screen.frag` (пост), интенсивность `Scene_Render.cpp:458`; объёмные подводные шахты — `Scene_Render.cpp:509`. 🛡️ радиальный blur от экранной позиции солнца.
+- **Каустика:** `renderCaustics()` (`Scene_Render.cpp:47`) рендерит узор **в текстуру** `causticsTex`; террейн её сэмплит (`Scene_Render.cpp:188-193`). Шейдеры `caustics.vert/frag`. 🛡️ render-to-texture, преломление сквозь воду.
+- **Волметрик облака:** `sky.frag` (cloudDensity/coverage, `Scene_Render.cpp:129-134`); вода отражает те же облака (`Scene_Render.cpp:387-392`). Скорость — слайдер `Cloud Speed`. 🛡️ шум (fbm) в `sky.frag`.
+- **🛰️ Сонар (Q):** `FireSonar()` (`Scene.h:101`), волна + контакты `Scene_Render.cpp:518-571`, рендер в `screen.frag`. Раскрашивает акулу красным, рыб — иначе. Интерактив.
+- **🦈 Акула:** существо `isShark` (`Scene.h:92` `GetSharkPos`), плавает в общей системе существ (`Scene.cpp`); `GetSharkThreat()` качает пост-эффект «паники».
+
 ### 👀 Глянуть
 - `screen.frag` — пост (god rays, туман, тонмаппинг).
 - `player/PlayerController.h` — физика плавания.
@@ -200,8 +208,8 @@
 **`scene/Scene_Props.cpp` (554 стр.)** — те же идеи для пропсов: дискретный LOD + frustum culling. Глянуть ключевое.
 
 ### 👀 Глянуть
-- `scene/FishSchool.cpp` — стая boids-lite; реакция = flee (стр. 151-158).
-- `core/ModelLoader.cpp` — импорт Assimp.
+- `scene/FishSchool.cpp` — стая boids-lite; реакция = flee (стр. 151-158). Косяк инициализируется **вокруг затонувшего корабля**: `Scene.cpp:655` (`school.init(150, wreckPos + (0,7,0), …)`) — рыбы кружат у wreck.
+- `core/ModelLoader.cpp` — импорт Assimp (OBJ/glTF: корабль, кораллы, рыбы).
 
 ### ⛔ Не читать
 - Внутренности `terrain.frag`, `water.frag`, `Camera.h`.
@@ -242,7 +250,9 @@
 | ⛈️ Storm / Intensity / Lightning / пресеты / **K** | панель / K | Микита |
 | 🐟 рыбы уплывают от игрока (8 м) | подплыть к стае | Саша |
 | 🔦 Flashlight (F) | F / панель | Артём |
-| ⚙️ Mode Player/Admin, Render Scale, Player Speed, Respawn, Go к POI | панель | Артём |
+| 🛰️ Сонар (Q) — раскрывает геометрию, красит акулу/рыб | клавиша Q | Артём |
+| 📍 Телепорты «Go» к wreck / shark / serpent | панель → POI | Артём |
+| ⚙️ Mode Player/Admin, Render Scale, Player Speed, Respawn | панель | Артём |
 
 > Камера сама по себе НЕ считается за интерактив (по спеке) — поэтому и важны эти пять.
 

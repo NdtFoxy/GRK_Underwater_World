@@ -238,7 +238,7 @@ void Scene::Init() {
     grassLand.clusterCount   = 6;      // each hit seeds a small tuft cluster
     grassLand.clusterRadius  = 2.2f;
     grassLand.scatter(
-        /*count*/ 24000,
+        /*count*/ 0,                 // island grass removed (the "plankton" tufts)
         heightmapData,
         terrainSize,
         heightScale,

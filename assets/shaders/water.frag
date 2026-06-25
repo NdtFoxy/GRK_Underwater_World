@@ -606,10 +606,11 @@ void main() {
         // distance; the bright sun path stays (sunGlint/GGX specular are
         // added separately below), so only strong light rays survive far out.
         reflColor *= mix(1.0, 0.40, reflFlat);
-        float ssrConf;
-        vec3 ssrCol = ssrReflect(FragPos, reflDir, ssrConf);
-        reflColor = mix(reflColor, ssrCol, ssrConf);
-        
+        // SSR reflection of the opaque scene (islands/rocks/seabed) DISABLED:
+        // from above it produced phantom/ghost reflections of trees & rocks that
+        // looked wrong. The water now reflects only the sky. (Screen-space
+        // REFRACTION below — the see-through seabed — is kept.)
+
         // ---- REAL transparency: screen-space refraction of the scene behind the
         // surface (the seabed/rocks already drawn into ssrColor), distorted by the
         // surface normal, then absorbed by the water-column thickness (Beer-Lambert).

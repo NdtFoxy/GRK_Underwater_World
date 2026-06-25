@@ -264,8 +264,31 @@ void Scene::Render(Camera& camera, float waveSpeed, float cloudSpeed, float wave
     //      reef, receives soft PCF shadows and the flashlight. ----
     if (splineProgram && serpent.indexCount > 0) {
         glUseProgram(splineProgram);
-        glm::mat4 sModel = serpent.patrolModel(time, glm::vec3(0.0f, -22.0f, 0.0f),
-                                               90.0f, 0.10f);
+
+        // Patrol orbit around the world centre. Closer + a bit faster than
+        // before so the serpent is actually seen. Crucially, the orbit
+        // height now follows the terrain: we sample the seabed along the
+        // body and lift the whole orbit so it clears the heightmap instead
+        // of ploughing through it — while staying safely underwater.
+        const float orbitR     = 55.0f;
+        const float orbitSpeed = 0.14f;
+        const float baseDepth  = -22.0f;
+        float ang = time * orbitSpeed;
+        glm::vec3 dir = glm::normalize(glm::vec3(-std::sin(ang), 0.0f, std::cos(ang)));
+        glm::vec3 headXZ(std::cos(ang) * orbitR, 0.0f, std::sin(ang) * orbitR);
+        float topY = -1.0e9f;
+        for (float s = -0.5f; s <= 0.5f; s += 0.25f) {
+            glm::vec3 p = headXZ + dir * (s * serpent.bodyLength);
+            float th = SampleTerrainHeight(p.x, p.z);
+            if (th > -90000.0f) topY = std::max(topY, th);
+        }
+        float centerY = baseDepth;
+        if (topY > -1.0e8f)
+            centerY = std::max(baseDepth, topY + 9.0f);   // clear the seabed
+        centerY = std::min(centerY, waterLevel - 6.0f);   // stay underwater
+
+        glm::mat4 sModel = serpent.patrolModel(time, glm::vec3(0.0f, centerY, 0.0f),
+                                               orbitR, orbitSpeed);
         setMat4(splineProgram, "model", sModel);
         setMat4(splineProgram, "view", viewMat);
         setMat4(splineProgram, "projection", projection);

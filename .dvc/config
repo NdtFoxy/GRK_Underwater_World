@@ -1,0 +1,5 @@
+[core]
+    remote = b2
+['remote "b2"']
+    url = s3://underworld-assets-mykyta/assets
+    endpointurl = https://s3.eu-central-003.backblazeb2.com

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\core\HeightmapLoader.cpp" />
+    <ClCompile Include="src\core\ModelLoader.cpp" />
+    <ClCompile Include="src\render\Framebuffer.cpp" />
+    <ClCompile Include="src\render\ShaderLoader.cpp" />
+    <ClCompile Include="src\scene\Scene.cpp" />
+    <ClCompile Include="src\scene\Scene_Terrain.cpp" />
+    <ClCompile Include="src\scene\Scene_Props.cpp" />
+    <ClCompile Include="src\scene\Scene_Render.cpp" />
+    <ClCompile Include="src\scene\VegetationSystem.cpp" />
+    <ClCompile Include="src\scene\FishSchool.cpp" />
+    <ClCompile Include="external\imgui\imgui.cpp" />
+    <ClCompile Include="external\imgui\imgui_demo.cpp" />
+    <ClCompile Include="external\imgui\imgui_draw.cpp" />
+    <ClCompile Include="external\imgui\imgui_tables.cpp" />
+    <ClCompile Include="external\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="external\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="external\imgui\backends\imgui_impl_opengl3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\HeightmapLoader.h" />
+    <ClInclude Include="src\core\ModelLoader.h" />
+    <ClInclude Include="src\render\Framebuffer.h" />
+    <ClInclude Include="src\render\ShaderLoader.h" />
+    <ClInclude Include="src\scene\Scene.h" />
+    <ClInclude Include="src\scene\VegetationSystem.h" />
+    <ClInclude Include="src\scene\FishSchool.h" />
+    <ClInclude Include="src\player\OxygenSystem.h" />
+    <ClInclude Include="src\player\CameraShake.h" />
+    <ClInclude Include="src\player\PlayerController.h" />
+    <ClInclude Include="src\player\PlayerHUD.h" />
+    <ClInclude Include="src\player\Flashlight.h" />
+    <ClInclude Include="src\scene\Camera.h" />
+    <ClInclude Include="src\render\Cubemap.h" />
+    <ClInclude Include="src\scene\SplinePath.h" />
+    <ClInclude Include="src\render\ShadowMap.h" />
+    <ClInclude Include="src\scene\WaveField.h" />
+    <ClInclude Include="src\scene\Weather.h" />
+    <ClInclude Include="src\scene\FloatingObject.h" />
+    <ClInclude Include="src\scene\PalmMesh.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\screen.frag" />
+    <None Include="assets\shaders\screen.vert" />
+    <None Include="assets\shaders\terrain.vert" />
+    <None Include="assets\shaders\terrain.frag" />
+    <None Include="assets\shaders\seabed.vert" />
+    <None Include="assets\shaders\seabed.frag" />
+    <None Include="assets\shaders\water.frag" />
+    <None Include="assets\shaders\water.vert" />
+    <None Include="assets\shaders\sky.vert" />
+    <None Include="assets\shaders\sky.frag" />
+    <None Include="assets\shaders\vegetation.vert" />
+    <None Include="assets\shaders\vegetation.frag" />
+    <None Include="assets\shaders\caustics.vert" />
+    <None Include="assets\shaders\caustics.frag" />
+    <None Include="assets\shaders\clouds.frag" />
+    <None Include="assets\shaders\flashlight.glsl" />
+    <None Include="assets\shaders\skybox.vert" />
+    <None Include="assets\shaders\skybox.frag" />
+    <None Include="assets\shaders\depth.vert" />
+    <None Include="assets\shaders\depth.frag" />
+    <None Include="assets\shaders\spline.vert" />
+    <None Include="assets\shaders\spline.frag" />
+    <None Include="assets\shaders\object.vert" />
+    <None Include="assets\shaders\object.frag" />
+    <None Include="assets\shaders\bubbles.vert" />
+    <None Include="assets\shaders\bubbles.frag" />
+    <None Include="assets\shaders\sediment.frag" />
+    <None Include="assets\shaders\sediment.vert" />
+    <None Include="assets\shaders\rain.vert" />
+    <None Include="assets\shaders\rain.frag" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{4bded449-fd0e-47db-b8d9-2ff5c07cbeb0}</ProjectGuid>
+    <RootNamespace>projectunderworld</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)external;$(ProjectDir)external\imgui;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\freeglut\include;$(ProjectDir)..\dependencies\glew-2.0.0\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\include;$(ProjectDir)..\dependencies\assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\dependencies\freeglut\lib;$(ProjectDir)..\dependencies\glew-2.0.0\lib\Release\Win32;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019;$(ProjectDir)..\dependencies\assimp;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)external;$(ProjectDir)external\imgui;$(ProjectDir)..\dependencies;$(ProjectDir)..\dependencies\freeglut\include;$(ProjectDir)..\dependencies\glew-2.0.0\include;$(ProjectDir)..\dependencies\glm;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\include;$(ProjectDir)..\dependencies\assimp\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\dependencies\freeglut\lib;$(ProjectDir)..\dependencies\glew-2.0.0\lib\Release\Win32;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019;$(ProjectDir)..\dependencies\assimp;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019\glfw3.lib;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019\glfw3dll.lib;zlibd.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>opengl32.lib;freeglut.lib;glew32.lib;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019\glfw3.lib;$(ProjectDir)..\dependencies\glfw-3.3.8.bin.WIN32\lib-vc2019\glfw3dll.lib;zlibd.lib;assimp-vc141-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

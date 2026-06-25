@@ -1,0 +1,104 @@
+# =====================================================================
+#  Project Underworld — .gitignore
+# =====================================================================
+
+# --- Build outputs ---
+build/
+out/
+cmake-build-*/
+Debug/
+Release/
+x64/
+Win32/
+bin/
+obj/
+
+# --- CMake ---
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# --- Visual Studio ---
+.vs/
+*.user
+*.suo
+*.aps
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+*.ipch
+*.pdb
+*.idb
+*.ilk
+*.exp
+*.lib
+*.exe
+*.obj
+*.tlog
+*.recipe
+*.lastbuildstate
+
+# --- CLion / JetBrains ---
+.idea/
+*.iml
+
+# --- VS Code ---
+.vscode/
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# --- Logs & scratch output ---
+*.log
+run_*.txt
+chk_*.log
+e.log
+o.log
+
+# --- ImGui runtime state ---
+imgui.ini
+
+# --- macOS ---
+.DS_Store
+._*
+
+# --- Windows ---
+Thumbs.db
+Desktop.ini
+
+# --- Runtime DLLs (placed next to .exe by build system) ---
+*.dll
+
+# --- Bundled binary deps (optional, keep out of repo) ---
+dependencies/
+
+# --- Vendored imgui git history ---
+external/imgui/.git/
+
+# =====================================================================
+#  Large assets — managed via DVC, NOT committed to git
+# =====================================================================
+assets/
+
+# =====================================================================
+#  AI / agent tooling — local only, never push to GitHub
+#  (keeps AI out of the repo and off the contributor list)
+# =====================================================================
+.claude/
+.agents/
+.kiro/
+.cursor/
+.aider*
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+.github/copilot-instructions.md
+docs/superpowers/

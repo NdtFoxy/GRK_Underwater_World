@@ -1,8 +1,8 @@
 <!--
   ════════════════════════════════════════════════════════════════════
-  WSKAZÓWKA: zrzuty ekranu wrzucaj do  docs/img/  (NIE do assets/,
+  WSKAZÓWKA: zrzuty ekranu wrzucaj do  screenshots/  (NIE do assets/,
   bo assets/ jest w DVC i .gitignore — obrazy z assets/ nie trafią na GitHub).
-  Podmień banner.png oraz pliki 01..06 na własne screeny z gry.
+  Podmień baner.jpg oraz pliki 01..06 na własne screeny z gry.
   ════════════════════════════════════════════════════════════════════
 -->
 
@@ -132,7 +132,7 @@ Wszystkie **6 metod obowiązkowych** jest zaimplementowanych:
         🧩 <code>CMakeLists.txt</code> ── Build wieloplatformowy (mac/linux)<br>
         🐍 <code>generate_heightmap.py</code> ── Generator świata + wizualny edytor<br>
         📦 <code>assets/{textures,3d,hdri}.dvc</code> ── Wskaźniki DVC na ciężkie zasoby<br>
-        📖 <code>README.md</code> ── Ten plik · 🧭 <code>TEAM_GUIDE.md</code> ── Wewnętrzna mapa kodu
+        📖 <code>README.md</code> ── Ten plik (dokumentacja projektu)
       </blockquote>
     </details>
   </blockquote>
@@ -246,14 +246,18 @@ Gotowy plan demo — wykonuj punkty po kolei, wszystko klika się z panelu ImGui
 
 # 🖼️ Galeria
 
-<!-- Wrzuć własne screeny do docs/img/ i podmień ścieżki poniżej -->
+<!--
+  PLACEHOLDER: wrzuć własne screeny z gry do  screenshots/  i podmień
+  ścieżki poniżej (np. screenshots/01_terrain.png). Do czasu dodania
+  zdjęć wyświetlają się szare zaślepki z opisem ujęcia.
+-->
 <div align="center">
-  <img src="docs/img/01_terrain.png"  width="32%" alt="Dno z heightmapy (B07)">
-  <img src="docs/img/02_vegetation.png" width="32%" alt="Roślinność instancing + LOD (A07)">
-  <img src="docs/img/03_water.png"     width="32%" alt="Fale Gerstnera">
-  <img src="docs/img/04_daynight.png"  width="32%" alt="Cykl dnia i nocy">
-  <img src="docs/img/05_storm.png"     width="32%" alt="Sztorm">
-  <img src="docs/img/06_sonar.png"     width="32%" alt="Sonar">
+  <img src="https://placehold.co/640x360/1b2a3a/9fd0ff?text=B07+%E2%80%94+Dno+z+heightmapy"  width="32%" alt="Dno z heightmapy (B07)">
+  <img src="https://placehold.co/640x360/1b3a2a/9fffc0?text=A07+%E2%80%94+Ro%C5%9Blinno%C5%9B%C4%87+%28LOD%29" width="32%" alt="Roślinność instancing + LOD (A07)">
+  <img src="https://placehold.co/640x360/16384f/aee0ff?text=Fale+Gerstnera"     width="32%" alt="Fale Gerstnera">
+  <img src="https://placehold.co/640x360/3a2f16/ffe0a0?text=Cykl+dnia+i+nocy"  width="32%" alt="Cykl dnia i nocy">
+  <img src="https://placehold.co/640x360/2a2230/d9b3ff?text=Sztorm"     width="32%" alt="Sztorm">
+  <img src="https://placehold.co/640x360/12303a/8fe0e0?text=Sonar"     width="32%" alt="Sonar">
 </div>
 
 ---

@@ -104,7 +104,13 @@ AGENTS.md
 CLAUDE.md
 GEMINI.md
 .github/copilot-instructions.md
-docs/superpowers/
+
+# =====================================================================
+#  Internal team guides & project docs — local only, not on GitHub
+# =====================================================================
+TEAM_GUIDE.md
+team-guide.qmd
+docs/
 
 # =====================================================================
 #  Quarto / generated PDFs (regenerate with: quarto render ... )

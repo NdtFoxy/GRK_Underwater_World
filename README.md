@@ -8,7 +8,7 @@
 
 <div align="center" style="margin: 0; padding: 0;">
   <a href="#" style="display: block; margin: 0;">
-    <img src="docs/img/banner.png" alt="Project Underworld" width="2560" height="auto" style="display: block; margin: 0;">
+    <img src="baner.jpg" alt="Project Underworld" width="2560" height="auto" style="display: block; margin: 0;">
   </a>
 
   <h3 align="center" style="margin: 0;">🌊 Project Underworld — Renderer Świata Podwodnego</h3>

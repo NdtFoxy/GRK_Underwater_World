@@ -552,3 +552,54 @@ void Scene::renderProps(const glm::mat4& view, const glm::mat4& projection,
     glBindVertexArray(0);
     glDisable(GL_CULL_FACE);
 }
+
+// Depth-only render of the static props into the sun shadow map. Rocks are
+// solid casters; foliage (palms/ferns) uses the alpha-tested depth path so
+// its leaf cutouts cast leaf-shaped shadows rather than solid quads.
+void Scene::renderPropsDepth(const glm::vec3& camPos) {
+    if (depthProgram == 0 || propInstances.empty()) return;
+
+    GLint locModel = glGetUniformLocation(depthProgram, "model");
+    GLint locAlpha = glGetUniformLocation(depthProgram, "alphaTest");
+    GLint locTex   = glGetUniformLocation(depthProgram, "albedoTex");
+    glUniform1i(glGetUniformLocation(depthProgram, "instanced"), 0);
+
+    // Only rasterise props whose AABB can actually land in the light's map.
+    Frustum lf; lf.extract(shadowMap.lightSpace);
+
+    for (const auto& pi : propInstances) {
+        glm::vec3 o = glm::vec3(pi.model[3]);
+        if (!lf.testAABB(o - glm::vec3(pi.cullRadius), o + glm::vec3(pi.cullRadius)))
+            continue;
+
+        const PropMesh& pm = propMeshes[pi.meshId];
+        // Shadows tolerate coarse geometry: pick a cheap LOD by distance.
+        float d = glm::length(camPos - o);
+        int lodIndex = (d < 120.0f) ? 1 : 2;
+        if (pm.lods[lodIndex].indexCount <= 0 || pm.lods[lodIndex].ebo == 0)
+            lodIndex = 0;
+        const PropMesh::PropLOD& lod = pm.lods[lodIndex];
+        if (lod.indexCount <= 0 || lod.ebo == 0) continue;
+
+        glUniformMatrix4fv(locModel, 1, GL_FALSE, glm::value_ptr(pi.model));
+        glBindVertexArray(pm.vao);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lod.ebo);
+
+        for (const auto& sub : lod.subs) {
+            if (sub.alphaMode == 2) continue;                       // skip blended/glass
+            if (sub.albedo == 0 && sub.baseAlpha < 0.15f) continue; // skip invisible slices
+            bool cut = pi.alphaCut || sub.alphaMode == 1;
+            if (cut && sub.albedo) {
+                glUniform1i(locAlpha, 1);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, sub.albedo);
+                glUniform1i(locTex, 1);
+            } else {
+                glUniform1i(locAlpha, 0);
+            }
+            glDrawElements(GL_TRIANGLES, sub.indexCount, GL_UNSIGNED_INT,
+                           (void*)(sub.indexOffset * sizeof(unsigned int)));
+        }
+    }
+    glUniform1i(locAlpha, 0);   // leave the program in the solid-caster state
+}

@@ -92,18 +92,35 @@ vec3 applyNormalMap(vec3 N, vec3 fragPos, vec2 uv) {
     return normalize(TBN * n);
 }
 
-vec3 flashlight(vec3 fragPos, vec3 N) {
+vec3 flashlight(vec3 fragPos, vec3 N, vec3 V, vec3 albedo, vec3 F0, float roughness) {
     if (flashOn == 0) return vec3(0.0);
     vec3 toFrag = fragPos - flashPos;
     float dist = length(toFrag);
     if (dist > flashRange) return vec3(0.0);
-    vec3 L = toFrag / max(dist, 1e-4);
+    vec3 L  = toFrag / max(dist, 1e-4);    // light -> fragment
+    vec3 Ld = -L;                          // fragment -> light
     float theta = dot(L, normalize(flashDir));
     float cone = clamp((theta - flashOuterCos) / max(flashInnerCos - flashOuterCos, 0.001), 0.0, 1.0);
     cone *= cone;
     float fade = 1.0 - dist / flashRange; fade *= fade;
-    float ndl = max(dot(N, -L), 0.0);
-    return flashColor * flashIntensity * cone * fade * (0.25 + 0.75 * ndl);
+    float ndl = max(dot(N, Ld), 0.0);
+    vec3 radiance = flashColor * flashIntensity * cone * fade;
+
+    // Diffuse (lambert with a small wrap so grazing surfaces still read).
+    vec3 diff = albedo * (0.25 + 0.75 * ndl);
+
+    // Blinn-Phong specular that tracks the camera — the demonstrable
+    // specular term. A pure dielectric F0 (0.04) is too dim to read on
+    // matte stone, so we lift the reflectance to a glossy floor: the
+    // flashlight produces a clearly visible hot-spot that slides as you
+    // move (shine it on a rock to show specular). Metals keep their F0.
+    vec3 H = normalize(Ld + V);
+    float NdotH = max(dot(N, H), 0.0);
+    float shininess = mix(48.0, 256.0, 1.0 - roughness);
+    vec3  specCol = max(F0, vec3(0.25));            // glossy floor for the demo
+    vec3  spec = specCol * pow(NdotH, shininess) * 2.0;
+
+    return radiance * (diff + spec);
 }
 
 void main() {
@@ -189,7 +206,8 @@ void main() {
     // stays bright when the camera is deep (matches terrain/cave).
     float camDepthFL = max(0.0, -cameraPos.y);
     float depthDarkFL = clamp(exp(-camDepthFL * 0.018), 0.02, 1.0);
-    color += flashlight(FragPos, N) * albedo / depthDarkFL;
+    vec3 F0flash = mix(vec3(0.04), albedo, metallic);
+    color += flashlight(FragPos, N, V, albedo, F0flash, roughness) / depthDarkFL;
 
     FragColor = vec4(color, alphaOut);
 }

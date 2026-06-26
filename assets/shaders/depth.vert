@@ -1,5 +1,6 @@
 #version 330 core
 layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 aUV;
 
 // Depth-only pass from the sun's point of view. Each shadow caster is
 // drawn with its own `model`; instanced casters (vegetation) supply a
@@ -15,7 +16,12 @@ uniform float time;
 layout (location = 3) in vec4 iPosYaw;     // xyz world pos, w yaw
 layout (location = 4) in vec2 iScalePhase; // x scale, y phase
 
+// Forwarded only for the alpha-tested path (foliage props) so leaf
+// cutouts cast leaf-shaped shadows instead of solid quads.
+out vec2 vUV;
+
 void main() {
+    vUV = aUV;
     vec3 world;
     if (instanced == 1) {
         float yaw = iPosYaw.w;

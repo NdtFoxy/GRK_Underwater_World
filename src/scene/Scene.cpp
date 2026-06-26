@@ -390,6 +390,7 @@ void Scene::renderShadowDepth(const glm::vec3& sunDir, const glm::vec3& camPos) 
     glUseProgram(depthProgram);
     glUniformMatrix4fv(glGetUniformLocation(depthProgram, "lightSpaceMatrix"),
                        1, GL_FALSE, glm::value_ptr(shadowMap.lightSpace));
+    setInt(depthProgram, "alphaTest", 0);   // terrain/coral are solid casters
 
     glm::mat4 model = glm::mat4(1.0f);
 
@@ -423,6 +424,10 @@ void Scene::renderShadowDepth(const glm::vec3& sunDir, const glm::vec3& camPos) 
     //     produce a mismatched shadow. It still RECEIVES shadows. ---
     // --- vegetation (instanced) ---
     coral.renderDepth(depthProgram, camPos, time);
+
+    // --- static props (rocks + foliage): rocks cast solid shadows,
+    //     palms/ferns cast alpha-tested leaf-shaped shadows. ---
+    renderPropsDepth(camPos);
 
     glBindVertexArray(0);
     glBindFramebuffer(GL_FRAMEBUFFER, prevFBO);

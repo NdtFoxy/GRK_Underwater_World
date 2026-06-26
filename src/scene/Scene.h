@@ -315,6 +315,9 @@ private:
     void renderProps(const glm::mat4& view, const glm::mat4& projection,
                      const glm::vec3& camPos, const glm::vec3& sunDir,
                      Camera& camera);
+    // Depth-only pass for static props (called from renderShadowDepth) so
+    // rocks/palms cast sun shadows. Foliage uses the alpha-tested path.
+    void renderPropsDepth(const glm::vec3& camPos);
 
     // === Animated sea creatures (jellyfish drift + tuna swim) =======
     // Drawn through the object shader, animated on the CPU (drift / swim

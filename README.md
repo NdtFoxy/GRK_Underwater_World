@@ -56,16 +56,16 @@ Kombinacja ocenianych technik naszej grupy:
 
 Wszystkie **6 metod obowiązkowych** jest zaimplementowanych:
 
-| # | Metoda | Typ | Gdzie w kodzie (do obrony) |
-|---|--------|-----|----------------------------|
-| 🟩 | **A07 — Instancing + LOD** | **oceniana** | `VegetationSystem.cpp`, `vegetation.{vert,frag}` (+ LOD propsów w `Scene_Props.cpp`) |
-| 🟦 | **B07 — Heightmap seabed** | **oceniana** | `Scene_Terrain.cpp`, `HeightmapLoader.cpp`, `terrain.{vert,frag}`, `seabed.*` |
-| 1 | Normal mapping | obowiązkowa | `terrain.frag`, `object.frag`, `water.frag` |
-| 2 | Materiały PBR (Cook-Torrance) | obowiązkowa | `terrain.frag` |
-| 3 | Kamera kwaternionowa | obowiązkowa | `src/scene/Camera.h` |
-| 4 | Cubemap (środowisko) | obowiązkowa | `src/render/Cubemap.h`, `skybox.*`, `sky.frag` |
-| 5 | Parallel Transport Frames (wąż morski) | obowiązkowa | `src/scene/SplinePath.h`, `spline.*` |
-| 6 | Shadow mapping + PCF | obowiązkowa | `src/render/ShadowMap.h`, `depth.*`, PCF w `terrain.frag` |
+| # | Metoda | Gdzie w kodzie |
+|---|--------|----------------|
+| 🟩 | **A07 — Instancing + LOD** | `VegetationSystem.cpp`, `vegetation.{vert,frag}` (+ LOD propsów w `Scene_Props.cpp`) |
+| 🟦 | **B07 — Heightmap seabed** | `Scene_Terrain.cpp`, `HeightmapLoader.cpp`, `terrain.{vert,frag}`, `seabed.*` |
+| 1 | Normal mapping | `terrain.frag`, `object.frag`, `water.frag` |
+| 2 | Materiały PBR (Cook-Torrance) | `terrain.frag` |
+| 3 | Kamera kwaternionowa | `src/scene/Camera.h` |
+| 4 | Cubemap (środowisko) | `src/render/Cubemap.h`, `skybox.*`, `sky.frag` |
+| 5 | Parallel Transport Frames (wąż morski) | `src/scene/SplinePath.h`, `spline.*` |
+| 6 | Shadow mapping + PCF | `src/render/ShadowMap.h`, `depth.*`, PCF w `terrain.frag` |
 
 ---
 

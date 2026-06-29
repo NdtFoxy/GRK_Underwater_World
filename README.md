@@ -246,18 +246,13 @@ Gotowy plan demo — wykonuj punkty po kolei, wszystko klika się z panelu ImGui
 
 # 🖼️ Galeria
 
-<!--
-  PLACEHOLDER: wrzuć własne screeny z gry do  screenshots/  i podmień
-  ścieżki poniżej (np. screenshots/01_terrain.png). Do czasu dodania
-  zdjęć wyświetlają się szare zaślepki z opisem ujęcia.
--->
+<!-- Screeny z gry (pliki .jpg w katalogu głównym repo). -->
 <div align="center">
-  <img src="https://placehold.co/640x360/1b2a3a/9fd0ff?text=B07+%E2%80%94+Dno+z+heightmapy"  width="32%" alt="Dno z heightmapy (B07)">
-  <img src="https://placehold.co/640x360/1b3a2a/9fffc0?text=A07+%E2%80%94+Ro%C5%9Blinno%C5%9B%C4%87+%28LOD%29" width="32%" alt="Roślinność instancing + LOD (A07)">
-  <img src="https://placehold.co/640x360/16384f/aee0ff?text=Fale+Gerstnera"     width="32%" alt="Fale Gerstnera">
-  <img src="https://placehold.co/640x360/3a2f16/ffe0a0?text=Cykl+dnia+i+nocy"  width="32%" alt="Cykl dnia i nocy">
-  <img src="https://placehold.co/640x360/2a2230/d9b3ff?text=Sztorm"     width="32%" alt="Sztorm">
-  <img src="https://placehold.co/640x360/12303a/8fe0e0?text=Sonar"     width="32%" alt="Sonar">
+  <img src="Dno%20z%20heightmapy%20(B07).jpg"  width="32%" alt="Dno z heightmapy (B07)">
+  <img src="Ro%C5%9Blinno%C5%9B%C4%87%20instancing%20%2B%20LOD%20(A07).jpg" width="32%" alt="Roślinność instancing + LOD (A07)">
+  <img src="Cykl%20dnia%20i%20nocy.jpg"  width="32%" alt="Cykl dnia i nocy">
+  <img src="Sztorm.jpg"     width="32%" alt="Sztorm">
+  <img src="Sonar.jpg"     width="32%" alt="Sonar">
 </div>
 
 ---

@@ -264,11 +264,3 @@ python generate_heightmap.py editor      # wizualny edytor + jeden klik „apply
 python generate_heightmap.py list        # lista presetów proceduralnych
 ```
 Edytor zapisuje `assets/textures/world/T_World_Heightmap.png` oraz maski biomów, które wczytuje silnik.
-
----
-
-## 🙏 Credits
-
-- Creepvine Asset Pack — *gavinpgamer1* (CC-BY)
-- Modele korali i zestawy tekstur PBR — odpowiedni autorzy
-- Dear ImGui, stb_image, tinyexr — vendored w `external/`
